@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trivia Game</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/resetCSS.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="assets/javascript/game.js"></script>
+ -->
+</head>
+<body>
+  <!-- First Row -->
+  <div class="row">
+    <!-- First (and only column) -->
+    <div class="col-sm-12">
+      <div id="title">Trivia Game!</div>
+    </div>
+  </div><br>
+
+  <!-- Second Row -->
+  <div class="row">
+    <!-- First Column -->
+    <div class="col-sm-12">
+      <div id="currentQ">
+        <p id="question"></p>
+        <form id="answers">
+          <input type="radio" id="option1" value=""><br>
+          <input type="radio" id="option2" value=""> option2
+        </form>
+      </div>
+    </div>
+    <!-- Second Column -->
+    <div class="col-sm-3">
+      <button id="submit" type="button">Submit</button>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+
+    var questions = {
+      q1: {
+        question: "What year did The Office premiere?",
+        option1: "2004",
+        option2: "2005",
+        answer: "2005"
+      },
+      q2: {
+        question: "What year did Firefly premiere?",
+        option1: "2002",
+        option2: "2003",
+        answer: "2002"
+      },
+    };
+
+    function generateQuestions() {
+      $("#question").text(questions.q1.question);
+      $("#answers").value(questions.q1.option1);
+      $("#option2").text(questions.q1.option2);
+    }
+
+    generateQuestions();
+
+    $("#submit").on("click", function(event) {
+
+    });
+
+  </script>
+
+
+</body>
+</html>
