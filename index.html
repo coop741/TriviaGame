@@ -12,7 +12,7 @@
   <!-- jQuery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <!-- <script type="text/javascript" src="assets/javascript/game.js"></script>
- -->
+-->
 </head>
 <body>
   <!-- First Row -->
@@ -26,49 +26,164 @@
   <!-- Second Row -->
   <div class="row">
     <!-- First Column -->
-    <div class="col-sm-12">
-      <div id="currentQ">
-        <p id="question"></p>
-        <form id="answers">
-          <input type="radio" id="option1" value=""><br>
-          <input type="radio" id="option2" value=""> option2
-        </form>
+    <div class="col-sm-8">
+      <div class="initialize">
+        <button id="start">Start</button><br>
+      </div>
+      <div class="timeRemaining hidden">
+        <p>Time Remaining: <span id="time">15</span> Seconds</p>
+      </div>
+      <div class="question hidden">
+        <h3 id="prompt">Question</h3>
+        <ul id="list">
+          <li><a class='option' id='option1'></a></li>
+          <li><a class='option' id='option2'></a></li>
+          <li><a class='option' id='option3'></a></li>
+        </ul>
+      </div>
+      <div class="answer hidden">
+        <h3 id="message"></h3>
+        <h4 id="correctAnswerIs"></h4>
+      </div>
+      <div class="results hidden">
+        <h3 id="end">Here are your results!</h3>
+        <p>Correct Answers: <span id="correct"></span></p>
+        <p>Incorrect Answers: <span id="incorrect"></span></p>  
+        <p>Unanswered: <span id="unanswered"></span></p>
+        <button id="restart">Play Again?</button>
       </div>
     </div>
-    <!-- Second Column -->
-    <div class="col-sm-3">
-      <button id="submit" type="button">Submit</button>
-    </div>
   </div>
-
+<!-- ====================================================================
+ -->  
   <script type="text/javascript">
+    var timer = 16;
+    var currentIndex = 0;
+    var correct = 0;
+    var incorrect = 0;
+    var unanswered = 0;
+    var userSelection;
+    var intervalId;
 
-    var questions = {
-      q1: {
+    var questions = [
+      {
         question: "What year did The Office premiere?",
-        option1: "2004",
-        option2: "2005",
+        options: ['2002', '2003', '2005'],
         answer: "2005"
       },
-      q2: {
+      {
         question: "What year did Firefly premiere?",
-        option1: "2002",
-        option2: "2003",
+        options: ["2002", "2003", "2004"],
         answer: "2002"
       },
-    };
+      {
+        question: "How many miles is it from Phoenix to Tucson?",
+        options: ["100", "110", "120"],
+        answer: "110"
+      }
+    ];
 
-    function generateQuestions() {
-      $("#question").text(questions.q1.question);
-      $("#answers").value(questions.q1.option1);
-      $("#option2").text(questions.q1.option2);
+    $("#start").on("click", function() {
+      $('.initialize').addClass('hidden');
+      $('.timeRemaining').removeClass('hidden');
+      $('.question').removeClass('hidden');
+      generateQuestions();
+      startTimer();
+    });
+
+    function startTimer() {
+      intervalId = setInterval(countDown, 1000);
     }
 
-    generateQuestions();
+    //timer count down
+    function countDown() {
+      timer--;
+      $('#time').html(timer);
+      if (timer === 0) {
+        clearInterval(intervalId);
+        $('#message').html('Time is up!');
+        $('#correctAnswerIs').html('The answer is ' + questions[currentIndex].answer);
+        $('.question').addClass('hidden');
+        $('.answer').removeClass('hidden');
+        unanswered++;
+        currentIndex++;
+        if (currentIndex < questions.length) {
+          setTimeout(nextQuestion, 1000 * 3);
+        }
+        else {
+          setTimeout(results, 1000 * 3);
+        }
+      }
+    }
 
-    $("#submit").on("click", function(event) {
+    function generateQuestions() {
+      $('#prompt').html(questions[currentIndex].question);
+      $('#option1').html(questions[currentIndex].options[0]);
+      $('#option2').html(questions[currentIndex].options[1]);
+      $('#option3').html(questions[currentIndex].options[2]);
+    }
 
+    //answer user selects
+    $('.option').on('click', function(event) {
+      event.preventDefault();
+      clearInterval(intervalId);
+      $('.question').addClass('hidden');
+      $('.answer').removeClass('hidden');
+
+      userSelection = $(this).text();
+
+      if (userSelection === questions[currentIndex].answer) {
+        $('#message').html('Correct!');
+        $('#correctAnswerIs').html('The answer is ' + questions[currentIndex].answer);
+        correct++;
+      }
+      else {
+        $('#message').html('Wrong!');
+        $('#correctAnswerIs').html('The answer is ' + questions[currentIndex].answer);
+        incorrect++;
+      }
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        setTimeout(nextQuestion, 1000 * 3);
+      }
+      else {
+        setTimeout(results, 1000 * 3);
+      }
     });
+
+    function nextQuestion() {
+      timer = 16;
+      $('#counter').html('20');
+      $('.answer').addClass('hidden');
+      $('.question').removeClass('hidden');
+      generateQuestions();
+      startTimer();
+    }
+
+    function results() {
+      $('#correct').html(correct);
+      $('#incorrect').html(incorrect);
+      $('#unanswered').html(unanswered);
+      $('.answer').addClass('hidden');
+      $('.timeRemaining').addClass('hidden');
+      $('.results').removeClass('hidden');
+    }
+
+    //restart game
+    $('#restart').on('click', function () {
+      currentIndex = 0;
+      timer = 16;
+      correct = 0;
+      incorrect = 0;
+      unanswered = 0;
+      $('.results').addClass('hidden');
+      $('.timeRemaining').removeClass('hidden');
+      $('.question').removeClass('hidden');
+      generateQuestions();
+      startTimer();
+    });
+
+
 
   </script>
 
