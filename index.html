@@ -4,22 +4,22 @@
   <title>Trivia Game</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="css/resetCSS.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/resetCSS.css">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
   <!-- jQuery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <!-- <script type="text/javascript" src="assets/javascript/game.js"></script>
--->
+  <script type="text/javascript" src="assets/javascript/app.js"></script>
+
 </head>
 <body>
   <!-- First Row -->
   <div class="row">
     <!-- First (and only column) -->
     <div class="col-sm-12">
-      <div id="title">Trivia Game!</div>
+      <div id="title">Arizona Sky Island Trivia Game!</div>
     </div>
   </div><br>
 
@@ -57,131 +57,7 @@
 <!-- ====================================================================
  -->  
   <script type="text/javascript">
-    var timer = 16;
-    var currentIndex = 0;
-    var correct = 0;
-    var incorrect = 0;
-    var unanswered = 0;
-    var userSelection;
-    var intervalId;
-
-    var questions = [
-      {
-        question: "What year did The Office premiere?",
-        options: ['2002', '2003', '2005'],
-        answer: "2005"
-      },
-      {
-        question: "What year did Firefly premiere?",
-        options: ["2002", "2003", "2004"],
-        answer: "2002"
-      },
-      {
-        question: "How many miles is it from Phoenix to Tucson?",
-        options: ["100", "110", "120"],
-        answer: "110"
-      }
-    ];
-
-    $("#start").on("click", function() {
-      $('.initialize').addClass('hidden');
-      $('.timeRemaining').removeClass('hidden');
-      $('.question').removeClass('hidden');
-      generateQuestions();
-      startTimer();
-    });
-
-    function startTimer() {
-      intervalId = setInterval(countDown, 1000);
-    }
-
-    //timer count down
-    function countDown() {
-      timer--;
-      $('#time').html(timer);
-      if (timer === 0) {
-        clearInterval(intervalId);
-        $('#message').html('Time is up!');
-        $('#correctAnswerIs').html('The answer is ' + questions[currentIndex].answer);
-        $('.question').addClass('hidden');
-        $('.answer').removeClass('hidden');
-        unanswered++;
-        currentIndex++;
-        if (currentIndex < questions.length) {
-          setTimeout(nextQuestion, 1000 * 3);
-        }
-        else {
-          setTimeout(results, 1000 * 3);
-        }
-      }
-    }
-
-    function generateQuestions() {
-      $('#prompt').html(questions[currentIndex].question);
-      $('#option1').html(questions[currentIndex].options[0]);
-      $('#option2').html(questions[currentIndex].options[1]);
-      $('#option3').html(questions[currentIndex].options[2]);
-    }
-
-    //answer user selects
-    $('.option').on('click', function(event) {
-      event.preventDefault();
-      clearInterval(intervalId);
-      $('.question').addClass('hidden');
-      $('.answer').removeClass('hidden');
-
-      userSelection = $(this).text();
-
-      if (userSelection === questions[currentIndex].answer) {
-        $('#message').html('Correct!');
-        $('#correctAnswerIs').html('The answer is ' + questions[currentIndex].answer);
-        correct++;
-      }
-      else {
-        $('#message').html('Wrong!');
-        $('#correctAnswerIs').html('The answer is ' + questions[currentIndex].answer);
-        incorrect++;
-      }
-      currentIndex++;
-      if (currentIndex < questions.length) {
-        setTimeout(nextQuestion, 1000 * 3);
-      }
-      else {
-        setTimeout(results, 1000 * 3);
-      }
-    });
-
-    function nextQuestion() {
-      timer = 16;
-      $('#counter').html('20');
-      $('.answer').addClass('hidden');
-      $('.question').removeClass('hidden');
-      generateQuestions();
-      startTimer();
-    }
-
-    function results() {
-      $('#correct').html(correct);
-      $('#incorrect').html(incorrect);
-      $('#unanswered').html(unanswered);
-      $('.answer').addClass('hidden');
-      $('.timeRemaining').addClass('hidden');
-      $('.results').removeClass('hidden');
-    }
-
-    //restart game
-    $('#restart').on('click', function () {
-      currentIndex = 0;
-      timer = 16;
-      correct = 0;
-      incorrect = 0;
-      unanswered = 0;
-      $('.results').addClass('hidden');
-      $('.timeRemaining').removeClass('hidden');
-      $('.question').removeClass('hidden');
-      generateQuestions();
-      startTimer();
-    });
+    
 
 
 
